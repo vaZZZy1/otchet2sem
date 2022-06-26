@@ -1,0 +1,257 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2B]{fontenc}
+\usepackage[english,russian]{babel}
+
+\frenchspacing
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{fullpage}
+\usepackage{multicol,multirow}
+\usepackage{tabularx}
+\usepackage{ulem}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+\newcommand{\MYhref}[3][blue]{\href{#2}{\color{#1}{#3}}}%
+
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{csquotes}
+\DeclareQuoteStyle{russian}
+	{\guillemotleft}{\guillemotright}[0.025em]
+	{\quotedblbase}{\textquotedblleft}
+\ExecuteQuoteOptions{style=russian}
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{tabsize=2,
+	breaklines,
+	columns=fullflexible,
+	flexiblecolumns,
+	numbers=left,
+	numberstyle={\footnotesize},
+	extendedchars,
+	inputencoding=utf8}
+
+\usepackage{longtable}
+
+\def\@xobeysp{ }
+\def\verbatim@processline{\hspace{1.2cm}\raggedright\the\verbatim@line\par}
+
+\oddsidemargin=-0.4mm
+\textwidth=160mm
+\topmargin=4.6mm
+\textheight=210mm
+
+\parindent=0pt
+\parskip=3pt
+
+\definecolor{lightgray}{gray}{0.9}
+
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{gray},
+  identifierstyle=\color{black},
+  stringstyle=\color{blue},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+% Отступы
+\usepackage{geometry}
+\geometry{
+a4paper,
+right=10mm,
+left=10mm,
+top=20mm,
+bottom=20mm,
+}
+
+% https://tex.stackexchange.com/questions/55698/text-under-a-line
+\newcommand\tline[2]{$\underset{\text{#1}}{\text{\underline{\hspace{#2}}}}$}
+
+% Заголовок курсовой работы
+% Единственный аргумент --- ее тема
+
+\newcommand{\CWPHeader}[1]{\addtocounter{section}{-1}\section{#1}}
+
+\newcommand{\CWHeader}[1]{\section*{#1}}
+
+\newcommand{\CWProblem}[1]{\par\textbf{Задача: }#1}
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\bfseries
+
+{\Large Министерство науки и высшего образования}
+
+\vspace{12pt}
+
+{\Large Московский авиационный институт \\ (национальный исследовательский университет)}
+
+\vspace{48pt}
+
+\large Институт компьютерных наук и прикладной математики
+
+\vspace{36pt}
+
+\large Кафедра вычислительной математики и программирования
+
+\vspace{72pt}
+
+Журнал по ознакомительной практике \\
+% (индивидуальный план)
+
+\end{center}
+
+\vspace{180pt}
+
+\begin{flushleft}
+\hspace{350pt} Студент: Амурский В. А. 
+\vspace{5pt}
+\hspace{350pt} Группа: М8О-101Б-21 
+\vspace{5pt}
+\hspace{350pt} Оценка: 
+\vspace{5pt}
+\hspace{350pt} Дата: 
+\vspace{5pt}
+\hspace{350pt} Подпись:
+\end{flushleft}
+
+\vspace*{\fill}
+
+\begin{center}
+\bfseries
+Москва, \the\year
+\end{center}
+\end{titlepage}
+
+\begin{center}
+\bfseries{\large ИНСТРУКЦИЯ }
+
+\vspace{12pt}
+
+\bfseries{о заполнении журнала по производственной практике}
+\end{center}
+
+\begin{multicols}{2}
+{\small
+Журнал по производственной практике студентов имеет единую форму для всех видов практик.
+
+Задание в журнал вписывается руководителем практики от института в первые три-пять дней пребывания студентов на практике в соответствии с тематикой, утверждённой на кафедре до начала практики. Журнал по производственной практике является основным документом для текущего и итогового контроля выполнения заданий, требований инструкции и программы практики.
+
+Табель прохождения практики, задание, а также технический отчёт выполняются каждым студентом самостоятельно.
+
+Журнал заполняется студентом непрерывно в процессе прохождения всей практики и регулярно представляется для просмотра руководителям практики. Все их замечания подлежат немедленному выполнению.
+
+В разделе «Табель прохождения практики» ежедневно должно быть указано, на каких рабочих местах и в качестве кого работал студент. Эти записи проверяются и заверяются цеховыми руководителями практики, в том числе мастерами и бригадирами. График прохождения практики заполняется в соответствии с графиком распределения студентов по рабочим местам практики, утверждённым руководителем предприятия.
+В разделе «Рационализаторские предложения» должно быть приведено содержание поданных в цехе рационализаторских предложений со всеми необходимыми расчётами и эскизами. Рационализаторские предложения подаются индивидуально и коллективно.
+
+Выполнение студентом задания по общественно-политической практике заносятся в раздел «Общественно-политическая практика». Выполнение работы по оказанию практической помощи предприятию (участие в выполнении спецзаданий, работа сверхурочно и т.п.) заносятся в раздел журнала «Работа в помощь предприятию» с последующим письменным подтверждением записанной работы соответствующими цеховыми руководителями.
+Раздел «Технический отчёт по практике» должен быть заполнен особо тщательно. Записи необходимо делать чернилами в сжатой, но вместе с тем чёткой и ясной форме и технически грамотно. Студент обязан ежедневно подробно излагать содержание работы, выполняемой за каждый день. Содержание этого раздела должно отвечать тем конкретным требованиям, которые предъявляются к техническому отчёту заданием и программой практики. Технический отчёт должен показать умение студента критически оценивать работу данного производственного участка и отразить, в какой степени студент способен применить теоретические знания для решения конкретных производственных задач.
+
+Иллюстративный и другие материалы, использованные студентом в других разделах журнала, в техническом отчёте не должны повторяться, следует ограничиваться лишь ссылкой на него. Участие студентов в производственно-технической конференции, выступление с докладами, рационализаторские предложения и т.п. должны заноситься на свободные страницы журнала.
+
+{\bfseries Примечание.} Синьки, кальки и другие дополнения к журналу могут быть сделаны только с разрешения администрации предприятия и должны подшиваться в конце журнала.
+
+Руководители практики от института обязаны следить за тем, чтобы каждый цеховой руководитель практики перед уходом студентов из данного цеха в другой цех вписывал в журнал студента отзывы об их работе в цехе.
+
+Текущий контроль работы студентов осуществляется руководители практики от института и цеховыми руководителями практики заводов. Все замечания студентам руководители делают в письменном виде на страницах журнала, ставя при этом свою подпись и дату проверки.
+
+Результаты защиты технического отчёта заносятся в протокол и одновременно заносятся в ведомость и зачётную книжку студента.
+
+{\bfseries Примечание.} Нумерация чистых страниц журнала проставляется каждым студентом в своём журнале до начала практики.}
+\end{multicols}
+
+\begin{center}
+С инструкцией о заполнении журнала ознакомлены:
+\end{center}
+
+\enquote{\hspace{0.5cm}} \tline{(дата)}{1.5in} 2022\,г.\hfill Студент Амурский В. А. \tline{(подпись)}{1in}
+
+\pagebreak
+\begin{center}
+\bfseries{\large ЗАДАНИЕ}
+\end{center}
+
+Принять участие в тренировках и соревнованиях по олимпиадному программированию для студентов первого курса в 2021/2022 учебном году: посетить и проработать установочные лекции, решать и дорешивать конкурсные задания, принять участие в разборе. Объём практики 108 часов.
+
+\vspace*{\fill}
+Руководитель практики от института:
+
+\vspace{5pt}
+\enquote{\hspace{0.5cm}} \tline{(дата)}{1.5in} 2022\,г.\hfill \tline{(подпись)}{1in}
+\pagebreak
+
+\begin{center}
+\bfseries{\large ТАБЕЛЬ ПРОХОЖДЕНИЯ ПРАКТИКИ}
+\end{center}
+
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{№} & \textbf{Дата} & \textbf{Название} & \textbf{Время} & \textbf{Место} & \textbf{Решено} & \textbf{Дорешано} & \textbf{Подпись} \\
+& & \textbf{контеста} & \textbf{проведения} & \textbf{проведения} & \textbf{задач} & \textbf{задач} & \\
+\hline
+1 & 17.09.2021 & Выдача задания, Основы C++ [1] & 16:30 - 21:30 & Дистанционно & 0 & 12 & \\
+\hline
+2 & 01.10.2021 & Библиотека C++ [3] & 16:30 - 21:30 & Дистанционно & 1 & 2 & \\
+\hline
+3 & 21.11.2021 & RuCode 4.0 Div A-B Champoinship & 11:00 - 16:00 & Дистанционно & 1 & 2 & \\
+\hline
+4 & 05.12.2021 & Осенняя олимпиада первого курса & 11:00 - 17:00 & МАИ & 1 & 2 & \\
+\hline
+5 & 27.01.2022 & Codeforces Round \#768 (Div. 2) & 17:35 - 19:35 & Дистанционно & 1 & 2 & \\
+\hline
+6 & 11.03.2022 & Паросочетания в двудольном графе, & 16:30 - 21:30 & Дистанционно & 1 & 2 & \\
+& & потоки в транспортной сети [15] & & & & & \\
+\hline
+7 & 12.07.2022 & Оформление журнала. & 9:00 - 18:00 & МАИ & & & \\
+& & Защита практики & & & & & \\
+\hline
+& & Итого часов & 108 & & & & \\
+\hline
+\end{tabular}
+}
+
+\pagebreak
+
+\end{document}
