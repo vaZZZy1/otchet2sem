@@ -231,11 +231,11 @@ bottom=20mm,
 \textbf{№} & \textbf{Дата} & \textbf{Название} & \textbf{Время} & \textbf{Место} & \textbf{Решено} & \textbf{Дорешано} & \textbf{Подпись} \\
 & & \textbf{контеста} & \textbf{проведения} & \textbf{проведения} & \textbf{задач} & \textbf{задач} & \\
 \hline
-1 & 17.09.2021 & Выдача задания, Основы C++ [1] & 16:30 - 21:30 & Дистанционно & 0 & 12 & \\
+1 & 17.09.2021 & Основы C++ [1] & 16:30 - 21:30 & Дистанционно & 0 & 12 & \\
 \hline
 2 & 19.09.2021 & Stage 2-B: Grand Prix of IMO, Div. 2 & 11:00 - 16:00 & Дистанционно & 2 & 0 & \\
 \hline
-3 & 24.09.2021 & Основы С++ [2]  & 16:30 - 21:30 & Дистанционно & 2 & 0 & \\
+3 & 24.09.2021 & Основы С++ [2]  & 16:30 - 21:30 & Дистанционно & 0 & 12 & \\
 \hline
 4 & 26.09.2021 & Stage 3-B: Grand Prix of XiAn, Div. 2 & 11:00 - 16:00 & Дистанционно & 2 & 0 & \\
 \hline
@@ -361,4 +361,195 @@ bottom=20mm,
 \noindent
 Дата: 12 июля \the\year\,г.\hspace{50pt}\textit
 \pagebreak
+\begin{center}
+\bfseries{\large ТЕХНИЧЕСКИЙ ОТЧЁТ ПО ПРАКТИКЕ}
+\end{center}
+
+\subsection*{Основы C++ [1]}
+\begin{center}
+\includegraphics[width=\textwidth]{1A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Идея проста: cчитать два числа, сложить их и вывести. Асимптотика $O(1)$
+
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	ll a, b;
+	cin >> a >> b;
+	cout << a + b;
+	return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state1.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача дорешана. Проблем не возникло, мог решить на конетсте, если бы его не проспал.
+\subsection*{Основы C++ [2]}
+\begin{center}
+\includegraphics[width=\textwidth]{2A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Сначала заведем массив чисел и введем его через консоль с помощью цикла. Потом так же с помощью цикла просуммируем все числа в массиве и выведем ответ. Асимптотика $O(n)$, где $n$ - кол-во элементов. 
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+typedef long long ll;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	int n;
+	cin >> n;
+	ll ans = 0;
+	for (int i = 0; i < n; i++) {
+		ll x;
+		cin >> x;
+		ans += x;
+	}
+	cout << ans;
+	return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state2.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача дорешана. Основные события отладки: неправильный ответ на претесте 1, забыл считать кол-во элементов в массиве.
+\subsection*{Библиотека C++ [4]}
+\begin{center}
+\includegraphics[width=\textwidth]{6G.png}
+\end{center}
+\subsubsection*{Идея решения}
+Будем имитировать численность каждого клана в отсортированном состоянии благодаря типу multiset. Далее заведем цикл с $n-1$ итераций, где будем брать два минимальных элемента, выводить их и класть сумму в multiset. Асимптотика  $O(n\log{}n)$
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+typedef long long ll;
+
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll n;
+    cin >> n;
+    multiset<ll> a;
+    for (int i = 0; i < n; i++) {
+        ll x;
+        cin >> x;
+        a.insert(x);
+    }
+    for (int i = 0; i < n - 1; i++) {
+        ll x1, x2;
+        x1 = *a.begin();
+        a.erase(a.begin());
+        x2 = *a.begin();
+        a.erase(a.begin());
+        cout << x1 << ' ' << x2 << endl;
+        a.insert(x1 + x2);
+    }
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state6.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло.
+\subsection*{Арифметика в кольце, комбинаторика, функция Эйлера [7] }
+\begin{center}
+\includegraphics[width=\textwidth]{9A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Реализуем логарифмическое возведение в степень: от степени n мы переходим, если она чётна, к $n / 2$, а иначе — к $n-1$. Понятно, что всего будет не более $2 \log n$ переходов, прежде чем мы придём к $n = 0$. К тому же, после каждого перемножения будем брать остаток по $m=10^9+7$.
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <numeric>
+#include <iomanip>
+#include <stack>
+#include <fstream>
+using namespace std;
+typedef long long ll;
+ll mod = 1000000007;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll t;
+    cin >> t;
+    for (int _ = 0; _ < t; _++) {
+        ll res = 1;
+        ll a, n;
+        cin >> a >> n;
+        while (n > 0) {
+            if (n % 2 == 1) {
+                res = (res * a) % mod;
+            }
+            a = (a * a) % mod;
+            n /= 2;
+        }
+        cout << res << endl;
+    }
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state9.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло.
 \end{document}
