@@ -449,7 +449,7 @@ int main()
 \includegraphics[width=\textwidth]{6G.png}
 \end{center}
 \subsubsection*{Идея решения}
-Будем имитировать численность каждого клана в отсортированном состоянии благодаря типу multiset. Далее заведем цикл с $n-1$ итераций, где будем брать два минимальных элемента, выводить их и класть сумму в multiset. Асимптотика  $O(n\log{}n)$
+Будем имитировать численность каждого клана в отсортированном состоянии благодаря типу multiset. Далее заведем цикл с $n-1$ итераций, где будем брать два минимальных элемента, выводить их и класть сумму в multiset. Асимптотика  $O(n\log{}n)$.
 \subsubsection*{Исходный код}
 \begin{lstlisting}
 #include <iostream>
@@ -503,7 +503,7 @@ int main()
 \includegraphics[width=\textwidth]{9A.png}
 \end{center}
 \subsubsection*{Идея решения}
-Реализуем логарифмическое возведение в степень: от степени n мы переходим, если она чётна, к $n / 2$, а иначе — к $n-1$. Понятно, что всего будет не более $2 \log n$ переходов, прежде чем мы придём к $n = 0$. К тому же, после каждого перемножения будем брать остаток по $m=10^9+7$.
+Реализуем логарифмическое возведение в степень: от степени n мы переходим, если она чётна, к $n / 2$, а иначе — к $n-1$. Понятно, что всего будет не более $2 \log n$ переходов, прежде чем мы придём к $n = 0$. К тому же, после каждого перемножения будем брать остаток по $m=10^9+7$. Асимптотика $O(\log{}n)$
 \subsubsection*{Исходный код}
 \begin{lstlisting}
 #include <iostream>
@@ -552,4 +552,409 @@ int main()
 
 \subsubsection*{Выводы}
 Задача решена, проблем не возникло.
+\subsection*{ Префиксные суммы, сортировка событий, метод двух указателей [8]}
+\begin{center}
+\includegraphics[width=\textwidth]{10B.png}
+\end{center}
+\subsubsection*{Идея решения}
+Реализуем метод сканирующей прямой: создадим массив, в котором каждом элементе будет храниться два числа - первое число координата точки, второе число приоритет точки(0 - открывающая точка, 1 - закрывающая точка). К тому же будем хранить две переменные $ans$ и $q$, которые будут отвечать за кол-во точек не накрытых хотя бы одним отрезком и кол-во "открытых" отрезков. Далее будем обрабатывать сами отрезки: если текущая точка  открывающая, то добавим единицу к переменной $q$ и проверим равенство $q = 1$, если равенство справделиво, то добавим к переменной $ans$ разницу между текущей точкой и предыдущей, если точка закрывающая, то вычтем из $q$ единицу. Ответ равен $last - first - ans +1$, где $last$ - координата крайней правой точки, $first$ - координата крайней левой точки. Асимптотика $O(n\log{}n)$.
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <iomanip>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <set>
+#include <string>
+#include <stack>
+#include <deque>
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll n;
+    cin >> n;
+    vector<pair<ll, ll>> a(2*n);
+    for (int i = 0; i < 2*n; i+=2) {
+        ll l, r;
+        cin >> l >> r;
+        a[i] = { l, 0 };
+        a[i + 1] = { r,1 };
+    }
+    sort(a.begin(), a.end());
+    ll ans = 0;
+    ll q = 0;
+    for (int i = 0; i < 2 * n; i++) {
+        if (a[i].second == 0) {
+            ++q;
+            if (q == 1 and i) {
+                ans += a[i].first - a[i - 1].first - 1;
+            }
+        }
+        else {
+            --q;
+        }
+    }
+    cout << a[2 * n - 1].first - a[0].first - ans + 1;
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state10.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло.
+\subsection*{ Двумерное ДП, задача о рюкзаке [9]}
+\begin{center}
+\includegraphics[width=\textwidth]{11A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Переборное решение будет работать за $O(n^2 * m^2)$, что при заданном условии не будет проходить ограничение по времени. При таком ограничении по времени зайдет только $O(n*m)$. Реализуем задачу о наибольшей общей возрастающей последовательности. $d[i][j]$ — это длина наибольшей общей возрастающей подпоследовательности префиксов $a[1..i]$ и $b[1..j]$, причем элемент $b[j]$ — последний представитель НОВП массива b, а $a[i]$ может не быть последним в массиве a. Вычислять d будем всё так же: сначала по увеличению i, а при равенстве — по увеличению j. Тогда для очередного значения $d[i][j]$ есть два варианта: 
+\begin{itemize}
+\item $a[i]$ не входит в НОВП. Тогда $d[i][j] = d[i-1][j]$: значение динамики уже посчитано на префиксе $a[1..i-1]$
+\item $a[i]$ входит в НОВП. Это значит, что $a[i]=b[j]$, то есть для подсчёта $d[i][j]$ нужно пробегать циклом по b в поисках элемента $b[k]<b[j]$ с наибольшим значением $d[i-1][k]$. Но мы считаем d сначала по увеличению $i$, поэтому будем считать $a[i]$ фиксированным. Чтобы не запускать цикл при каждом равенстве $a[i]$ элементу $b[k]$, в дополнительной переменной best будем хранить "лучший" элемент (и его индекс ind в массиве b) такой, что этот элемент строго меньше $a[i]$ (а также меньше $b[k]$) и значение динамики для него максимально: $b[ind]<a[i]=b[j]$ и $best=d[i-1][ind] -> max$
+\end{itemize}
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <iomanip>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <set>
+#include <string>
+#include <stack>
+#include <deque>
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    string a, b;
+    cin >> a >> b;
+    ll n = a.size(), m = b.size();
+    vector<vector<ll>> dp(n + 1, vector<ll>(m + 1));
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (a[i - 1] == b[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            }
+            else {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    cout << dp[n][m];
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state11.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло.
+\subsection*{Геометрия, тернарный поиск [10]}
+\begin{center}
+\includegraphics[width=\textwidth]{12B.png}
+\end{center}
+\subsubsection*{Идея решения}
+Реализуем векторы и операции над ними. Угол между двумя векторами находится с помощью функции взятия арктангенса между векторным произведением и скалярным произведением, но здесь угол имеет диапазон от [$-2\pi; 2\pi$], а в условии сказано найти от $[0; \pi]$, поэтому возьмем модуль от полученного угла. Асимптотика $O(1)$.
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <ctime>
+#include <climits>
+#include <cassert>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <deque>
+#include <set>
+#include <map>
+#include <bitset>
+#include <utility>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+
+const double eps = 10e-3;
+struct point {
+    double x, y;
+    point() {}
+    point(double a, double b) : x(a), y(b) {}
+};
+
+point operator -(const point& a, const point& b) {
+    return point(a.x - b.x, a.y - b.y);
+}
+
+double scal(point a, point b) {
+    return a.x * b.x + a.y * b.y;
+}
+
+double vec(point a, point b) {
+    return a.x * b.y - b.x * a.y;
+}
+
+double ug(point a, point b) {
+    return(atan2(vec(a, b), scal(a, b)));
+}
+
+double len(const point a, const point b) {
+    return (sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)));
+}
+
+istream& operator >>(istream& in, point& p) {
+    in >> p.x >> p.y;
+    return in;
+}
+
+bool eql(double a, double b) {
+    if (abs(a - b) < eps) {
+        return true;
+    }
+    return false;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        point a, b;
+        int x0, y0, x1, y1, x2, y2;
+        cin >> x0 >> y0 >> x1 >> y1 >> x2 >> y2;
+        a = point(x1 - x0, y1 - y0);
+        b = point(x2 - x0, y2 - y0);
+        cout << fixed << setprecision(6) << abs(ug(a, b)) << '\n';
+    }
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state12.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло. 
+\subsection*{Основы теории графов [11]}
+\begin{center}
+\includegraphics[width=\textwidth]{15A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Поиском в глубину называется рекурсивный алгоритм обхода дерева или графа, начинающий в корневой вершине (в случае графа её может быть выбрана произвольная вершина) и рекурсивно обходящий весь граф, посещая каждую вершину ровно один раз. Для того чтобы вывести вершины в порядке обхода в глубину заведем переменную счетчик $c$ и массив $ans$, где будем отмечать под каким значением счетчика мы вошли в вершину. В конце выведем массив $ans$.
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <numeric>
+#include <iomanip>
+#include <stack>
+
+using namespace std;
+typedef   long long ll;
+
+ll mod = 1000000007;
+ll inf = INT64_MAX;
+
+vector<vector<ll>> gr;
+vector<bool> used;
+vector<ll> ans;
+ll c = 0;
+void dfs( ll p) {
+    used[p] = 1;
+    ans[p] = c++;
+    for (int i = 0; i < gr[p].size();i++) {
+        if (!used[gr[p][i]]) {
+            dfs(gr[p][i]);
+        }
+    }
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll n, m, k;
+    cin >> n >> m >> k;
+    gr.resize(n);
+    used.resize(n);
+    ans.assign(n, -1);
+    for (int i = 0; i < m; i++) {
+        ll a, b;
+        cin >> a >> b;
+        gr[a-1].push_back(b-1);
+        gr[b - 1].push_back(a - 1);
+    }
+    dfs(k - 1);
+    for (auto t : ans) {
+        cout << t << ' ';
+    }
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state15.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло. 
+\subsection*{Stage 10-B: Grand Prix of Kyoto, Div 2}
+\begin{center}
+\includegraphics[width=\textwidth]{17A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Пусть одна итерация - это момент от предущего удаления листовок до следующего. Тогда мы можем узнать в какую итерацию была удалена каждая из листовок, поделив день вывешивания листовки на период их удаления. Нам надо узнать кол-во различных итераций. Это легко сделать, если мы результат деления положим в объект типа set и узнаем размер полученного множества. 
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <queue>
+#include <tuple>
+#include <string>
+#include <list>
+typedef long long ll;
+using namespace std;
+const ll inf = INT64_MAX;
+
+ll n, t;
+vector<ll> a;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	cin >> n;
+	a.resize(n);
+	for (int i = 0; i < n; i++) cin >> a[i];
+	cin >> t;
+	set<ll> ans;
+	for (int i = 0; i < n; i++) {
+		ans.insert(a[i] / t);
+	}
+	cout << ans.size();
+	return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state17.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена, проблем не возникло. 
+\subsection*{Деревья, наименьший общий предок [14]}
+\begin{center}
+\includegraphics[width=\textwidth]{19A.png}
+\end{center}
+\subsubsection*{Идея решения}
+Введем массивы $tin$ и $tout$ для подсчёта времени входа и выхода соотвественно. Вершина $u$ является предком $v$ тогда и только тогда, когда $tin_v \in [tin_u; tout_u]$. Это условие мы и проверим и выведем ответ. 
+\subsubsection*{Исходный код}
+\begin{lstlisting}
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+typedef int ll;
+const long long size = 10e5 * 2 + 228;
+ll n, m;
+ll qq = 0;
+ll q, v, u;
+ll x;
+int tin[202222], tout[202222];
+vector<vector<ll>> gr;
+void dfs(long long v, long long p = -1) {
+    tin[v] = qq++;
+    for (int i = 0; i < gr[v].size(); i++) {
+        dfs(gr[v][i]);
+    }
+    tout[v] = qq;
+    return;
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    ll t;
+    cin >> t;
+    for (int _ = 0; _ < t; _++) {
+        cin >> n;
+        gr.assign(n,vector<ll>());
+       /* tin.assign(n,0), tout.assign(n,0);*/
+        for (int i = 1; i <= n - 1; i++) {
+            cin >> x;
+            gr[x - 1].push_back(i);
+        }
+        dfs(0);
+        cin >> q;
+        for (int i = 0; i < q; i++) {
+            cin >> u >> v;
+            --u, --v;
+            if (tin[v] >= tin[u] and tin[v] < tout[u]) {
+                cout << "YES";
+            }
+            else cout << "NO";
+            cout << '\n';
+        }
+      
+    }
+    return 0;
+}
+\end{lstlisting}
+\subsubsection*{Фрагмент турнирной таблицы контеста}
+\begin{center}
+\includegraphics[width=\textwidth]{state19.png}\newline\noindent
+\end{center}
+
+\subsubsection*{Выводы}
+Задача решена. Основные события процесса отладки: ошибка исполнения на тесте 2, вместо resize использовал assign; превышено ограничение времени на тесте 10, добавил команды cin.tie(0) и сout.tie(0);
+
 \end{document}
